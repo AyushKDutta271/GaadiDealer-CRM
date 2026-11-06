@@ -17,6 +17,7 @@ const Home = () => {
 
    const fetchLoggedInUser=async ()=>{
     const fetchedEmailId=await instance.get('/me');
+    console.log('fetched emailid',fetchedEmailId.data);
     const fetchedUser=await instance.get('/users/getUserByEmailId',{
         params:{
             emailId:fetchedEmailId.data

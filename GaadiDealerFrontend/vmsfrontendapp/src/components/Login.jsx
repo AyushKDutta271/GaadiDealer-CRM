@@ -90,19 +90,20 @@ const Login = () => {
     
             if( errors.emailError!=='' || errors.passwordError!==''  || errors.userTypeError!=='')
             {
-                setFinalError("Failed to Register!\n Please enter valid details!");
+                setFinalError("Failed to Login!\n Please enter valid details!");
                 setSuccessMessage(null);
             }
             else
             {
+                console.log(formInputs.usertype)
                 try
                 {
-               const response= await instance.post('/login',{
-                    'emailId':formInputs.email,
-                    'password':formInputs.password,
-                    'userType':formInputs.usertype
-                });
-
+                await instance.post('/login',{
+                            'emailId':formInputs.email,
+                            'password':formInputs.password,
+                            'userType':formInputs.usertype
+                })
+                   
                 // const token = response.data;
 
                 //M2:Saving the token in localStorage...until the expire time...but danger for xxs attacks

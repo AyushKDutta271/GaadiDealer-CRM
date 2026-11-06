@@ -207,7 +207,7 @@ const AddVehicle = () => {
         try{
             if(!finalError)
             {
-            await instance.post('/cars/sell',fd,
+            await instance.post('/cars/addVehicle',fd,
                 {
                     headers:{
                         "Content-Type":false  //because browser has to set headers automatically

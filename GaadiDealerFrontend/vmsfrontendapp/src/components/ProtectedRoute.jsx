@@ -11,6 +11,7 @@ const ProtectedRoute = ({children}) => {
                .then(res=>{
                 //if(mount)
                 if(res.data){
+                    console.log('this is from me-api',res.data);
                     //setAuth(res.data?true:false)
                 //setAuth(!!res.data)
                 setAuth(true)
