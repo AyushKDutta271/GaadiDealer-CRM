@@ -60,7 +60,7 @@ const Payment = () => {
     console.log("Razorpay order:", order);
 
     const options = {
-      key: process.env.RAZOR_API_KEY,
+      key: import.meta.env.VITE_RAZOR_API_KEY,
       amount: amountInPaise,
       currency: "INR",
       name: "GaadiDealer",
@@ -88,7 +88,11 @@ const Payment = () => {
     await instance.patch(`/leads/updateByStatusOfALead/${fetchedLead.id}`,{
         'buy':true
     });
-
+    instance.put(`/cars/buyVehicle/${fetchedCar.id}`,
+        {
+            'status':'YES'
+        }
+    )
     
     navigate('/user')
   } catch (error) {

@@ -132,7 +132,7 @@ navigate(`/viewACar/${carId}`)
                       <div class="carousel-caption d-none d-md-block">
                             <h5 style={{marginBottom:"40%"}}>{car.carBrand}</h5>
                             <p>{carDescs[idx]}</p>
-                            <button type='button'>View</button>
+                            <button type='button' onClick={()=>clickHandler(car.id)}>View</button>
                       </div>
                     </div>
                     
