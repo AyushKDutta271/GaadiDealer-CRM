@@ -14,15 +14,16 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addResourceHandlers(ResourceHandlerRegistry registry) {
-                registry.addResourceHandler("/*.jpg", "/*.jpeg", "/*.png", "/*.gif", "/*.webp")
-                        .addResourceLocations("file:src/main/resources/uploads/");
+                registry.addResourceHandler("/*.jpg", "/*.jpeg", "/*.png", "/*.gif", "/*.webp","/*.pdf")
+                        .addResourceLocations("file:src/main/resources/uploads/");  //why needed
             }
 
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:5173")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE")
+                        .allowedOrigins("http://localhost:5173","http://localhost:4173")
+
+                        .allowedMethods("GET", "POST", "PUT","PATCH", "DELETE","OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
             }

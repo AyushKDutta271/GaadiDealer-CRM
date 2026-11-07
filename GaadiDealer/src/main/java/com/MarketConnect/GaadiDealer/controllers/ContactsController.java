@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://localhost:5173")
+//@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/contacts")
 public class ContactsController {
@@ -24,8 +24,15 @@ public class ContactsController {
         }
 
         @PostMapping("/save")
-        public ResponseEntity<ContactsDto> saveContacts(@RequestBody ContactsDto contactsDto)
+        public ResponseEntity<Void> saveContacts()
         {
-            return ResponseEntity.status(HttpStatus.CREATED).body(contactsService.saveContactsInDB(contactsDto));
+            contactsService.saveContactsInDB();
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }
+
+        @GetMapping("/getAll")
+        public ResponseEntity<Long> getAllContacts()
+        {
+            return ResponseEntity.status(HttpStatus.OK).body(contactsService.getAllContactsFromDb());
         }
 }

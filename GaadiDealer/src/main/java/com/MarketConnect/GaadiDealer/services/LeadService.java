@@ -24,6 +24,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -35,8 +40,17 @@ public class LeadService {
     private LeadsRepository leadsRepository;
 
     @Autowired
+    private FileService fileService;
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private ClassConversion classConversion;
 
+    @Autowired
+    private ContactsService contactsService;
+    @Autowired
+    private VehicleRepository vehicleRepository;
 
     public byte[] generatePdfFile( Long leadId)
     {
@@ -60,16 +74,19 @@ public class LeadService {
         document.add(new Paragraph("City: " + lead.getCarId().getCity()));
         document.add(new Paragraph("Price: " + lead.getCarId().getCarPrice()));
 
-        if(lead.getCarId().getCarImages()!=null || !lead.getCarId().getCarImages().isEmpty())
+        if(lead.getCarId().getCarImages()!=null && !lead.getCarId().getCarImages().isEmpty())
         {
             try {
+                System.out.println(new URL(lead.getCarId().getCarImages().get(0)));
                 Image image = Image.getInstance(lead.getCarId().getCarImages().get(0));
+                System.out.println(lead.getCarId().getCarImages().get(0));
                 image.scaleToFit(400, 400);
                 document.add(image);
             }
             catch(IOException ex)
             {
-                throw new RuntimeException("No image found");
+                ex.printStackTrace();
+                document.add(new Paragraph("Could not load image: " + lead.getCarId().getCarImages().get(0) ));
             }
         }
         document.add(new Paragraph("Signature: ______________________"));
@@ -77,13 +94,12 @@ public class LeadService {
         return byteArrayOutputStream.toByteArray();
     }
 
+
+
     public String generateFileUri(MultipartFile docFile,Long leadId)
     {
-        String fileurl=ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(docFile.getOriginalFilename())
-                .toUriString();
-
-
+        String fileurl=fileService.generateDownloadableLink(docFile);
+        System.out.println("Recieved file from user: "+fileurl);
         Leads filteredLead= leadsRepository.findById(leadId).orElseThrow(()->new NoSuchElementException("No such lead having this userID and CarID exists!"));
 
         filteredLead.setUploadedDoc(fileurl);
@@ -107,7 +123,9 @@ public class LeadService {
 
     public LeadsDto saveLeadToDB(LeadsDto leadsDto)
     {
-        classConversion.leadsDtoToLeadsEntity(leadsDto);
+
+        Leads lead=classConversion.leadsDtoToLeadsEntity(leadsDto);
+        leadsRepository.save(lead);
         return leadsDto;
     }
 
@@ -123,6 +141,37 @@ public class LeadService {
         isVerified.forEach((k,v)->lead.setIsVerified(v));
 
         leadsRepository.save(lead);
+        return classConversion.leadsEntityToDto(lead);
+    }
+
+    public Long getTotalLeads()
+    {
+        return leadsRepository.findAllLeads(true);
+    }
+
+    public LeadsDto getLeadsByIdFromDB(Long leadId)
+    {
+        Leads lead=leadsRepository.findById(leadId).orElseThrow(()->new NoSuchElementException("No such lead with this id exists!"));
+        return classConversion.leadsEntityToDto(lead);
+    }
+
+    public LeadsDto getLeadsByTestDriveId(Long testdriveId)
+    {
+        Leads lead=leadsRepository.findLeadsByTestDriveId(testdriveId).orElseThrow(()->new NoSuchElementException("No such lead with this testdrive-id exists!"));
+        return classConversion.leadsEntityToDto(lead);
+    }
+
+    public LeadsDto updateBuyStatusOfALeadInDB(Long leadId, Map<String,Boolean> field)
+    {
+        Leads lead= leadsRepository.findById(leadId).orElseThrow(()->new NoSuchElementException("No such lead with this id exists!"));
+        for(Map.Entry<String,Boolean>kv:field.entrySet())
+        {
+            lead.setBuy(kv.getValue());
+            System.out.println(kv.getValue());
+        }
+
+        leadsRepository.save(lead);
+        contactsService.saveContactsInDB();
         return classConversion.leadsEntityToDto(lead);
     }
 }

@@ -12,9 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins="http://localhost:5173")
+//@CrossOrigin(origins="http://localhost:5173")
 @RestController
 @RequestMapping("/testdrives")
 public class TestDriveController {
@@ -37,6 +38,12 @@ public class TestDriveController {
         return ResponseEntity.status(HttpStatus.OK).body(testDriveService.listAllTestDrives(pageable));
     }
 
+    @GetMapping("/getTestDriveById/{id}")
+    public ResponseEntity<TestDriveDto> getTestDriveById(@PathVariable Long id)
+    {
+        return ResponseEntity.status(HttpStatus.OK).body(testDriveService.getTestDriveById(id));
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteTestDrive(@PathVariable Long id)
     {
@@ -50,6 +57,29 @@ public class TestDriveController {
         return ResponseEntity.status(HttpStatus.OK).body(testDriveService.changeStatusOfATestDrive(id,statusField));
     }
 
+    @PutMapping("/updateTestDate/{id}")
+    public ResponseEntity<TestDriveDto> updateDateConfirm(@PathVariable Long id, @RequestBody Map<String,Boolean> field)
+    {
+        return ResponseEntity.status(HttpStatus.OK).body(testDriveService.changeStatusOfDateConfirmOfTestDrive(id,field));
+    }
+
+    @GetMapping("/getTotalTestDrives")
+    public ResponseEntity<Long> getAllTestDrives()
+    {
+        return ResponseEntity.status(HttpStatus.OK).body(testDriveService.getAllTestDrivesFromDB());
+    }
+
+    @GetMapping("/getAllDoneTestDrives")
+    public ResponseEntity<Long> getAllDoneTestDrives()
+    {
+        return ResponseEntity.status(HttpStatus.OK).body(testDriveService.getAllDoneTestDrivesFromDB());
+    }
+
+    @GetMapping("/getTestDrivesByUserId/{userId}")
+    public ResponseEntity<Page<TestDriveDto>>  getTestDrivesByUserId(@PathVariable Long userId,Pageable pageable)
+    {
+        return ResponseEntity.status(HttpStatus.OK).body(testDriveService.getAllTestDrivesByUserIdFromDB(userId,pageable));
+    }
 
 
 }

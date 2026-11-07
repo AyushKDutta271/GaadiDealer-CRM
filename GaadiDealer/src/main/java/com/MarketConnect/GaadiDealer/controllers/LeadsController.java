@@ -1,6 +1,7 @@
 package com.MarketConnect.GaadiDealer.controllers;
 
 import com.MarketConnect.GaadiDealer.dtos.LeadsDto;
+import com.MarketConnect.GaadiDealer.entities.Leads;
 import com.MarketConnect.GaadiDealer.services.LeadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.util.Map;
 
-@CrossOrigin(origins="http://localhost:5173")
+//@CrossOrigin(origins="http://localhost:5173")
 @RestController
 @RequestMapping("/leads")
 public class LeadsController {
@@ -27,7 +28,7 @@ public class LeadsController {
 
 
         @GetMapping("/customerVerificationDoc/download/{leadId}")
-        public ResponseEntity<?> verificationDocDownload(@PathVariable Long leadId)
+        public ResponseEntity<byte[]> verificationDocDownload(@PathVariable Long leadId)
         {
 
             byte[] pdfFileBytes=leadService.generatePdfFile(leadId);
@@ -38,18 +39,18 @@ public class LeadsController {
             return ResponseEntity.ok().headers(httpHeaders).body(pdfFileBytes);
         }
 
-    @PostMapping("/customerVerificationDoc/upload/{leadId}")
-    public ResponseEntity<?> verificationDocUpload(@RequestParam MultipartFile docFile,@PathVariable Long leadId)
+    @PutMapping("/customerVerificationDoc/upload/{leadId}")
+    public ResponseEntity<?> verificationDocUpload(@PathVariable Long leadId,@RequestParam("docFile") MultipartFile docFile)
     {
+        System.out.println("downloadbale link: "+docFile);
         return ResponseEntity.status(HttpStatus.CREATED).body(leadService.generateFileUri(docFile,leadId));
     }
 
-        @GetMapping("/adminVerificationDoc/download/{leadId}")
-        public ResponseEntity<?> downloadFileFromAdmin(@PathVariable Long leadId)
-        {
-            leadService.generatePdfDocForAdmin(leadId);
-            return ResponseEntity.status(HttpStatus.OK).build();
-        }
+//        @GetMapping("/adminVerificationDoc/download/{leadId}")
+//        public ResponseEntity<?> downloadFileFromAdmin(@PathVariable Long leadId)
+//        {
+//
+//        }
 
 
         @PostMapping("/save")
@@ -61,6 +62,7 @@ public class LeadsController {
         @GetMapping("/getLeads")
         public ResponseEntity<Page<LeadsDto>> getLeads(Pageable pageable)
         {
+            System.out.println("fetched leads: "+leadService.getLeadsFromDb(pageable).getContent());
             return ResponseEntity.status(HttpStatus.OK).body(leadService.getLeadsFromDb(pageable));
         }
 
@@ -69,4 +71,29 @@ public class LeadsController {
         {
             return ResponseEntity.status(HttpStatus.OK).body(leadService.updateStatusOfALeadInDB(id,isVerified));
         }
+
+        @GetMapping("/getTotalLeads")
+        public ResponseEntity<Long> getAllLeads()
+        {
+            return ResponseEntity.status(HttpStatus.OK).body(leadService.getTotalLeads());
+        }
+
+        @GetMapping("/getLeadById/{leadId}")
+        public ResponseEntity<LeadsDto> getLeadById(@PathVariable Long leadId)
+        {
+            return ResponseEntity.status(HttpStatus.OK).body(leadService.getLeadsByIdFromDB(leadId));
+        }
+
+        @GetMapping("/getLeadByTestDriveId/{testdriveId}")
+        public ResponseEntity<LeadsDto> getLeadByTestDriveId(@PathVariable Long testdriveId)
+        {
+            return ResponseEntity.status(HttpStatus.OK).body(leadService.getLeadsByTestDriveId(testdriveId));
+        }
+
+        @PatchMapping("/updateByStatusOfALead/{leadId}")
+        public ResponseEntity<LeadsDto> updateBuyOfLead(@PathVariable Long leadId, @RequestBody Map<String,Boolean> field)
+        {
+            return ResponseEntity.status(HttpStatus.OK).body(leadService.updateBuyStatusOfALeadInDB(leadId,field));
+        }
+
 }

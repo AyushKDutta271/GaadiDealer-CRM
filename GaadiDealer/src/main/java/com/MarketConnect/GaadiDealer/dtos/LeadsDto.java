@@ -12,15 +12,17 @@ public class LeadsDto {
     private Long id;
 
     @NotNull
-    private Long userId;
+    private Long testDriveId;
+    @NotNull
+    private String emailId;
 
     @NotNull
     private Long carId;
 
     @NotNull
-    private Status buy;
+    private Boolean buy;
 
-    @NotNull
+
     private String uploadedDoc;
 
     @NotNull

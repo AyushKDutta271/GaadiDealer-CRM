@@ -1,6 +1,7 @@
 package com.MarketConnect.GaadiDealer.dtos;
 
 
+import com.MarketConnect.GaadiDealer.entities.Status;
 import jakarta.persistence.Column;
 import jakarta.persistence.Lob;
 import jakarta.validation.constraints.NotNull;
@@ -25,7 +26,7 @@ public class VehicleDto {
     @NotNull
     private String carBrand;
 
-    @NotNull
+//    @NotNull(message = "user id must not be null")
     private Long userId;
 
 
@@ -45,5 +46,6 @@ public class VehicleDto {
     private Double carPrice;
 
 
+    private String status;
 
 }

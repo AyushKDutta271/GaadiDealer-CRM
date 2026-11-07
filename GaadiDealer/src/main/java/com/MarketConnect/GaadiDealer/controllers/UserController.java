@@ -8,8 +8,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
-@CrossOrigin(origins = "http://localhost:5173")
+import java.util.Map;
+
+//@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -20,7 +23,16 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<UserDto> registerUser(@RequestBody UserDto userDto)
     {
+        System.out.println("REGISTER CONTROLLER REACHED");
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.addUserToDB(userDto));
+    }
+
+    
+
+    @GetMapping("/getUserByEmailId")
+    public ResponseEntity<UserDto> getUserByEmailId(@RequestParam("emailId") String emailId)
+    {
+            return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByEmailId(emailId));
     }
 
 

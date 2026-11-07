@@ -1,9 +1,13 @@
 package com.MarketConnect.GaadiDealer.services;
 
+import com.MarketConnect.GaadiDealer.entities.User;
+import com.MarketConnect.GaadiDealer.entities.UserType;
+import com.MarketConnect.GaadiDealer.repositories.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -11,10 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 @Service
@@ -26,10 +27,14 @@ public class JwtService {
     @Value("${jwt.expiration}")
     private Long expiration;
 
-    public String generateToken(String email)
+    @Autowired
+    private UserRepository userRepository;
+    public String generateToken(String email, UserType userType)
     {
+        User user= userRepository.findByEmailId(email).orElseThrow(()->new NoSuchElementException("No such user in db with this Email exists!"));
         Map<String,Object> claims = new HashMap<>();
         return Jwts.builder()
+                .claim("role",user.getUserType())
                 .claims()
                 .add(claims)
                 .subject(email)
@@ -38,6 +43,18 @@ public class JwtService {
                 .and()
                 .signWith(getKey())
                 .compact();
+    }
+
+
+    public String getClaim(String token)
+    {
+        return Jwts.parser()
+                .verifyWith(getKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .get("role",String.class);
+
     }
 
     public SecretKey getKey()
@@ -69,10 +86,10 @@ public class JwtService {
                 .getPayload();
     }
 
-    public boolean validateToken(String token, UserDetails userDetails)
+    public boolean validateToken(String token)
     {
         final String userName=extractUserName(token);
-        return (userName.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        return ( !isTokenExpired(token));
     }
 
     private boolean isTokenExpired(String token)

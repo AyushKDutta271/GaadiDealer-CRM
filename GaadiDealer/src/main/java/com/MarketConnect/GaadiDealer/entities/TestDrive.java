@@ -1,6 +1,7 @@
 package com.MarketConnect.GaadiDealer.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,6 +33,9 @@ public class TestDrive {
     @JoinColumn(name = "test_car_id")
     private Vehicle testCarId;
     private String city;
+
+
+    private Boolean isDateConfirmed;
     private Boolean isDone;
 
     @CreatedDate
@@ -42,11 +46,12 @@ public class TestDrive {
     @Column(nullable = false)
     private LocalDateTime modifiedAt;
 
-    public TestDrive(User userId, LocalDateTime dateAndTimeOfTestDrive, Vehicle testCarId, String city, Boolean isDone) {
+    public TestDrive(User userId, LocalDateTime dateAndTimeOfTestDrive, Vehicle testCarId, String city, Boolean isDateConfirmed,Boolean isDone) {
         this.userId = userId;
         this.dateAndTimeOfTestDrive = dateAndTimeOfTestDrive;
         this.testCarId = testCarId;
         this.city = city;
+        this.isDateConfirmed=isDateConfirmed;
         this.isDone = isDone;
     }
 }

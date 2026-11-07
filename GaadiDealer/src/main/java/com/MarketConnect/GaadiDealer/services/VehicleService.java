@@ -3,6 +3,7 @@ package com.MarketConnect.GaadiDealer.services;
 import com.MarketConnect.GaadiDealer.FileStorageProperties;
 import com.MarketConnect.GaadiDealer.classconversions.ClassConversion;
 import com.MarketConnect.GaadiDealer.dtos.VehicleDto;
+import com.MarketConnect.GaadiDealer.entities.Status;
 import com.MarketConnect.GaadiDealer.entities.Vehicle;
 import com.MarketConnect.GaadiDealer.repositories.VehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ public class VehicleService {
 
     public VehicleDto addVehicleInDB(VehicleDto vehicleDto)
     {
+
        vehicleRepository.save(classConversion.vehicleDtoToVehicleEntity(vehicleDto));
        return vehicleDto;
     }
@@ -52,10 +54,34 @@ public class VehicleService {
         return vehicleRepository.findAll(pageable).map(v->classConversion.vehicleToVehicleDto(v));
     }
 
-    public VehicleDto removeVehicleFromDB(Long id)
+    public VehicleDto getVehicleByIdFromDB(Long carId)
+    {
+        Vehicle vehicle=vehicleRepository.findById(carId).orElseThrow(()->new NoSuchElementException("No such car found with this Id!"));
+        return classConversion.vehicleToVehicleDto(vehicle);
+    }
+
+    public VehicleDto soldVehicleFromDB(Long id,Map<String,String> field)
     {
         Vehicle vehicle=vehicleRepository.findById(id).orElseThrow(()->new NoSuchElementException("Vehicle with this ID doesn't exist!"));
-        vehicleRepository.deleteById(id);
+
+         Set<Map.Entry<String,String>> kv=field.entrySet();
+         for(Map.Entry<String,String> s: kv)
+         {
+             System.out.println(s.getValue());
+             if(s.getValue().toUpperCase().equals("YES"))
+             {
+                 vehicle.setStatus("YES");
+             }
+             else if(s.getValue().toUpperCase().equals("NO"))
+             {
+                 vehicle.setStatus("NO");
+             }
+             else
+             {
+                 vehicle.setStatus("ON_HOLD");
+             }
+         }
+        vehicleRepository.save(vehicle);
         return classConversion.vehicleToVehicleDto(vehicle);
     }
 
@@ -70,5 +96,30 @@ public class VehicleService {
 
         vehicleRepository.save(vehicle);
         return classConversion.vehicleToVehicleDto(vehicle);
+    }
+
+    public Long getTotalSoldCarsFromDB()
+    {
+        return vehicleRepository.findAllVehicleByStatus("YES");
+    }
+
+    public Long getTotalUnSoldCarsFromDB()
+    {
+        return vehicleRepository.findAllVehicleByStatus("NO");
+    }
+
+    public Long getAllCarsFromDB()
+    {
+        return vehicleRepository.findAll().stream().count();
+    }
+
+    public Long getTotalEarnedMoneyFromDB()
+    {
+        return vehicleRepository.findTotalEarnedMoney("YES");
+    }
+
+    public Page<VehicleDto> getCarsByUserId(Long userId,Pageable pageable)
+    {
+        return vehicleRepository.findAllCarsByUserId(userId,pageable).map(v->classConversion.vehicleToVehicleDto(v));
     }
 }

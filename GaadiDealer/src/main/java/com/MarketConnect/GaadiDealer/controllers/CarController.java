@@ -1,6 +1,7 @@
 package com.MarketConnect.GaadiDealer.controllers;
 
 import com.MarketConnect.GaadiDealer.dtos.VehicleDto;
+import com.MarketConnect.GaadiDealer.entities.Status;
 import com.MarketConnect.GaadiDealer.services.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-@CrossOrigin(origins = "http://localhost:5173")
+//@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/cars")
 public class CarController {
@@ -78,10 +79,16 @@ public class CarController {
         return ResponseEntity.status(HttpStatus.OK).body(vehicleService.getAllVehicles(pageable));
     }
 
-    @DeleteMapping("/buyVehicle/{id}")
-    public ResponseEntity<VehicleDto> buyAVehicle(@PathVariable Long id)
+    @GetMapping("/viewVehicleById/{carId}")
+    public ResponseEntity<VehicleDto> getVehicleById(@PathVariable Long carId)
     {
-        return ResponseEntity.status(HttpStatus.OK).body(vehicleService.removeVehicleFromDB(id));
+        return ResponseEntity.status(HttpStatus.OK).body(vehicleService.getVehicleByIdFromDB(carId));
+    }
+
+    @PutMapping("/buyVehicle/{id}")
+    public ResponseEntity<VehicleDto> buyAVehicle(@PathVariable Long id,@RequestBody Map<String, String> field)
+    {
+        return ResponseEntity.status(HttpStatus.OK).body(vehicleService.soldVehicleFromDB(id,field));
     }
 
     @PutMapping("/updateVehicle/{id}")
@@ -90,5 +97,35 @@ public class CarController {
         return ResponseEntity.status(HttpStatus.OK).body(vehicleService.changeAVehicleAddImagesInDB(id,carImages));
     }
 
+
+    @GetMapping("/getAllSoldCars")
+    public ResponseEntity<Long> getTotalSoldVehicles()
+    {
+    return ResponseEntity.status(HttpStatus.OK).body(vehicleService.getTotalSoldCarsFromDB());
+    }
+
+    @GetMapping("/getTotalUnSoldCars")
+    public ResponseEntity<Long> getTotalUnSoldVehicles()
+    {
+        return ResponseEntity.status(HttpStatus.OK).body(vehicleService.getTotalUnSoldCarsFromDB());
+    }
+
+    @GetMapping("/getCountOfAllCars")
+    public ResponseEntity<Long> getTotalAvailableVehicles()
+    {
+        return ResponseEntity.status(HttpStatus.OK).body(vehicleService.getAllCarsFromDB());
+    }
+
+    @GetMapping("/getTotalMoneyEarned")
+    public ResponseEntity<Long> totalAmountEarnedFromCustomers()
+    {
+        return ResponseEntity.status(HttpStatus.OK).body(vehicleService.getTotalEarnedMoneyFromDB());
+    }
+
+    @GetMapping("/getCarsByUserId/{userId}")
+    public ResponseEntity<Page<VehicleDto>> getCarsByUserId(@PathVariable Long userId,Pageable pageable)
+    {
+        return ResponseEntity.status(HttpStatus.OK).body(vehicleService.getCarsByUserId(userId,pageable));
+    }
 
 }

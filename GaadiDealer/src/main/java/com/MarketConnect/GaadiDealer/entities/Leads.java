@@ -21,15 +21,16 @@ public class Leads {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private Long testDriveId;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User userId;
 
     @ManyToOne
     @JoinColumn(name = "car_id")
     private Vehicle carId;
-    private Status buy;
+    private Boolean buy;
     private String uploadedDoc;
     private Boolean isVerified;
     private Boolean isPaymentDone;
@@ -42,8 +43,9 @@ public class Leads {
     @Column(nullable = false)
     private LocalDateTime modifiedAt;
 
-    public Leads(User userId, Vehicle carId, Status buy, String uploadedDoc, Boolean isVerified, Boolean isPaymentDone) {
+    public Leads(User userId, Long testDriveId,Vehicle carId, Boolean buy, String uploadedDoc, Boolean isVerified, Boolean isPaymentDone) {
         this.userId = userId;
+        this.testDriveId=testDriveId;
         this.carId = carId;
         this.buy = buy;
         this.uploadedDoc = uploadedDoc;

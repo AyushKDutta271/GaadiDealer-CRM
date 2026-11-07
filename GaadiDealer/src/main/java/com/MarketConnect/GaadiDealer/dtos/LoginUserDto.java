@@ -1,5 +1,6 @@
 package com.MarketConnect.GaadiDealer.dtos;
 
+import com.MarketConnect.GaadiDealer.entities.UserType;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -17,4 +18,7 @@ public class LoginUserDto {
     @NotNull
     @Length(max = 10,min=5)
     private String password;
+
+    @NotNull
+    private UserType userType;
 }

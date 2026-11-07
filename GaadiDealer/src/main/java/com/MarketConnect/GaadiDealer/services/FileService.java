@@ -50,4 +50,23 @@ public class FileService {
         });
         return imageURLS;
     }
+
+    public String generateDownloadableLink(MultipartFile file) {
+        Path destination = this.ROOTLOCATION.resolve(file.getOriginalFilename());
+
+        try {
+            InputStream is = file.getInputStream();
+            Files.copy(is, destination, StandardCopyOption.REPLACE_EXISTING);
+             String imageURL = ServletUriComponentsBuilder
+                    .fromCurrentContextPath()
+                    .path(file.getOriginalFilename())
+                    .toUriString();
+             return imageURL;
+        }
+        catch(IOException ex)
+        {
+            throw new RuntimeException("Failed to generate download link");
+        }
+
+    }
 }

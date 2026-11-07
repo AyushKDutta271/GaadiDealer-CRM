@@ -55,6 +55,7 @@ public class Vehicle {
 
     private Double carPrice;
 
+    private String status;
     @CreatedDate
     @Column(nullable = false,updatable = false)
     private LocalDateTime createdAt;
@@ -63,7 +64,7 @@ public class Vehicle {
     @Column(nullable = false)
     private LocalDateTime modifiedAt;
 
-    public Vehicle(String carPlateNo, String carBrand, User carOwner, String state, String city, List<String> carImages, Double carPrice) {
+    public Vehicle(String carPlateNo, String carBrand, User carOwner, String state, String city, List<String> carImages, Double carPrice,String status) {
         this.carPlateNo = carPlateNo;
         this.carBrand = carBrand;
         this.carOwner = carOwner;
@@ -71,6 +72,7 @@ public class Vehicle {
         this.city = city;
         this.carImages = carImages;
         this.carPrice = carPrice;
+        this.status=status;
     }
 
     @Override

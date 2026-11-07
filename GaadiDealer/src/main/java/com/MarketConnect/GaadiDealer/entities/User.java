@@ -31,7 +31,7 @@ public class User implements UserDetails {
 
     private String fullName;
 
-
+    @Column(unique = true)
     private String emailId;
 
 
@@ -50,8 +50,8 @@ public class User implements UserDetails {
     private List<TestDrive> testDriveId;
 
 
-    @OneToOne(mappedBy = "userId")
-    private Leads leadId;
+    @OneToMany(mappedBy = "userId")
+    private List<Leads> leadId;
 
 
     private String userState;
