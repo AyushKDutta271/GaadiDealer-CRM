@@ -96,8 +96,10 @@ const fetchLoggedInUser=async ()=>{
                             <th>isVerified</th>
                         </tr>
                        {
+                       
                         leads.length>0?
                             (
+                            
                                leads.map((l,idx)=>{
                                 return (
                                     <tr key={l.id}>
@@ -122,15 +124,22 @@ const fetchLoggedInUser=async ()=>{
                                         </td>
                                         <td>
                                             {
+                                            l.uploadedDoc?
+                                            (
+                                             
                                              <button onClick={()=>{
                                                 const link=document.createElement('a');
+                                                console.log('file to show to admin: ',l.uploadedDoc);
                                                 link.href=l.uploadedDoc;
                                                 link.target='_blank'
                                                 document.body.appendChild(link);
                                                 link.click();
                                                 link.remove();
                                              }} style={{borderRadius:'15px', color:'orange'}}>
-                                               Open Doc </button>                                 
+                                               Open Doc </button> 
+                                            )
+                                            :
+                                            <p>Doc not uploaded by user yet</p>                                
                                             }
                                         </td>
                                         <td>

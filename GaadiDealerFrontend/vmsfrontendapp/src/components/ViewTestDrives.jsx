@@ -95,7 +95,7 @@ const fetchLoggedInUser=async ()=>{
     const submitDoc=async (e,t)=>{
         e.preventDefault();
         const fetchedLead=leads.filter(lead=>{
-            if(lead.emailId===t.emailId)
+            if(lead.emailId===t.emailId && t.id===lead.testDriveId)
                 return true;
         });
         console.log(doc, t);
