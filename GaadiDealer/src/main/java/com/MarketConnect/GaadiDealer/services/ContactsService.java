@@ -29,20 +29,20 @@ public class ContactsService {
         return contactsRepository.findAll(pageable).map(c->classConversion.contactsEntityToDto(c));
     }
 
-    public void saveContactsInDB()
+    public void saveContactsInDB(Leads lead)
     {
 //        contactsRepository.save(classConversion.contactsToContactsEntity(contactsDto));
 
-        List<Leads> leads=leadsRepository.findAllLeadsByBuy(true);
-        System.out.println(leads.size());
-        leads.forEach(lead->{
+
+
+
             Contacts contacts=new Contacts();
             contacts.setUserId(lead.getUserId().getId());
             contacts.setCarPlateNo(lead.getCarId().getCarPlateNo());
             contacts.setPaidPrice(lead.getCarId().getCarPrice());
 
             contactsRepository.save(contacts);
-        });
+
 
     }
 

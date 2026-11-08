@@ -23,12 +23,12 @@ public class ContactsController {
             return ResponseEntity.status(HttpStatus.OK).body(contactsService.getAllLeadsFromDB(pageable));
         }
 
-        @PostMapping("/save")
-        public ResponseEntity<Void> saveContacts()
-        {
-            contactsService.saveContactsInDB();
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        }
+//        @PostMapping("/save/{lead")
+//        public ResponseEntity<Void> saveContacts()
+//        {
+//            contactsService.saveContactsInDB();
+//            return ResponseEntity.status(HttpStatus.CREATED).build();
+//        }
 
         @GetMapping("/getAll")
         public ResponseEntity<Long> getAllContacts()

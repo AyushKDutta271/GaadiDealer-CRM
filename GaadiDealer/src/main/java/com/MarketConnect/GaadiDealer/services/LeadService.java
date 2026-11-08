@@ -171,7 +171,7 @@ public class LeadService {
         }
 
         leadsRepository.save(lead);
-        contactsService.saveContactsInDB();
+        contactsService.saveContactsInDB(lead);
         return classConversion.leadsEntityToDto(lead);
     }
 }

@@ -69,7 +69,14 @@ const Payment = () => {
       handler: async function (paymentResult) {
         console.log("Payment success:", paymentResult);
         alert("Payment successful");
-
+         await instance.patch(`/leads/updateByStatusOfALead/${fetchedLead.id}`,{
+        'buy':true
+        });
+        await instance.put(`/cars/buyVehicle/${fetchedCar.id}`,
+        {
+            'status':'YES'
+        }
+    )
         
       },
       prefill: {
@@ -85,18 +92,19 @@ const Payment = () => {
 
     const razorpay = new window.Razorpay(options);
     razorpay.open();
-    await instance.patch(`/leads/updateByStatusOfALead/${fetchedLead.id}`,{
-        'buy':true
-    });
-    instance.put(`/cars/buyVehicle/${fetchedCar.id}`,
-        {
-            'status':'YES'
-        }
-    )
+   
     
     navigate('/user')
   } catch (error) {
     console.error("Payment error:", error);
+     await instance.patch(`/leads/updateByStatusOfALead/${fetchedLead.id}`,{
+        'buy':false
+        });
+        await instance.put(`/cars/buyVehicle/${fetchedCar.id}`,
+        {
+            'status':'NO'
+        }
+    );
     alert("Payment could not be started");
   }
 };
