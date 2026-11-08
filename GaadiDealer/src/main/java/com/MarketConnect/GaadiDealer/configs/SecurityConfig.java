@@ -10,6 +10,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -25,6 +26,7 @@ public class SecurityConfig {
     {
         http    .cors(Customizer.withDefaults()) //what does this do?
                 .csrf(csrf->csrf.disable())
+                .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth->
                                     auth.requestMatchers("/users/register")
                                             .permitAll()
@@ -35,7 +37,7 @@ public class SecurityConfig {
                                             .requestMatchers("/userlogout")
                                             .hasAnyRole("ADMIN","USER")
                                             .requestMatchers("/cars/addVehicle")
-                                            .hasAnyRole("USER")
+                                            .hasAnyRole("USER","ADMIN")
                                             .requestMatchers("/cars/viewVehicles")
                                             .hasAnyRole("USER","ADMIN")
                                             .requestMatchers("/cars/sell")

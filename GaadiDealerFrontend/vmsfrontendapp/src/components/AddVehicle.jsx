@@ -215,7 +215,7 @@ const AddVehicle = () => {
                 }
             );
             setSuccessMessage("Car posted successfully!");
-            
+            setBackendError(null);
             }
             
         }
@@ -223,7 +223,7 @@ const AddVehicle = () => {
         {
             console.error(err);
            setBackendError("failed to post vehicle ...server error!");
-            
+            setSuccessMessage(null);
         }
         
     }
