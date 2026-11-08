@@ -8,6 +8,7 @@ import com.MarketConnect.GaadiDealer.repositories.ContactsRepository;
 import com.MarketConnect.GaadiDealer.repositories.LeadsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,9 @@ public class ContactsService {
     private ClassConversion classConversion;
     public Page<ContactsDto> getAllLeadsFromDB(Pageable pageable)
     {
+//        System.out.println("Ftehced leads: "+contactsRepository.findAll(pageable));
+
+
         return contactsRepository.findAll(pageable).map(c->classConversion.contactsEntityToDto(c));
     }
 

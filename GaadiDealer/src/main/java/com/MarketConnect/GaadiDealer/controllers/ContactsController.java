@@ -31,7 +31,7 @@ public class ContactsController {
 //        }
 
         @GetMapping("/getAll")
-        public ResponseEntity<Long> getAllContacts()
+        public ResponseEntity<Long> getAllContactsCount()
         {
             return ResponseEntity.status(HttpStatus.OK).body(contactsService.getAllContactsFromDb());
         }

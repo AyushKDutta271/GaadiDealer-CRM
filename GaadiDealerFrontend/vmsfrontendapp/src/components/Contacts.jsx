@@ -24,9 +24,30 @@ const fetchLoggedInUser=async ()=>{
    setLoggedInUser(user.data);
 }
     const fetchContacts=async ()=>{
-       const fetchedContacts= await instance.get('/contacts/get');
-       console.log(fetchedContacts.data.content)
-        setContacts(fetchedContacts.data.content);
+       const fetchedContacts= await instance.get('/contacts/get',{
+                params:{
+                    'page':0,
+                    'size':10
+                    }    }
+            );
+
+            console.log("Total elements:", fetchedContacts.data.totalElements);
+console.log("Total pages:", fetchedContacts.data.totalPages);
+console.log("First page records:", fetchedContacts.data.content.length);
+    //    console.log(fetchedContacts.data.content)
+    //     setContacts(fetchedContacts.data.content);
+        let allContactsArray=[...fetchedContacts.data.content];
+        for(let i=1; i<fetchedContacts.data.totalPages; i++)
+        {
+            let currentContacts=await instance.get('/contacts/get',{
+                params:{
+                    'page':i,
+                    'size':10
+                }
+            });
+            allContactsArray.push(...currentContacts.data.content);
+        }
+        setContacts(allContactsArray);
     }
   return (
     
