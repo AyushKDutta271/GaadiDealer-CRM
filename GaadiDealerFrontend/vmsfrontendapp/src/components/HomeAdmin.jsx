@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import instance from '../axiosConfig';
 import '../assets/componentscss/HomeAdmin.css'
+import { Bar } from 'react-chartjs-2';
 
 const HomeAdmin = () => {
     const location=useLocation();
@@ -127,12 +128,31 @@ const fetchAllTestDrives=async()=>{
           <div className='stats-content'> 
             <div className='row stats-row1 mt-5'>
                 <div className='stats-body1 col-md-4'>
-                    <h4>Cars Sold:</h4>
-                    <p className='mt-5'><strong>Total Sold Cars: (Sold count){noOfSoldCars}/(total inventory){totalCars}</strong></p>
+                    {/* <h4>Cars Sold:</h4>
+                    <p className='mt-5'><strong>Total Sold Cars: (Sold count){noOfSoldCars}/(total inventory){totalCars}</strong></p> */}
+                    <Bar
+                        data={{
+                            labels:["No. of sold cars","Total cars"],
+                            datasets:[
+                                {
+                                     
+                                label: "sold Cars ",
+                                data: [noOfSoldCars, totalCars],
+                                backgroundColor: ["green", "purple"],
+                                borderColor: ["darkgreen", "darkpurple"],
+                                borderWidth: 3,
+                                borderRadius: 5,
+                                barThickness: 70
+                                }
+                                
+                            ]
+                        }}
+                    />
                 </div>
                 <div className='stats-body2 col-md-3'>
                     <h4>Total Revenue:</h4>
                     <p className='mt-5'><strong>Total Earned Revenue: {totalRevenue}</strong></p>
+                    
                 </div>
             </div>
             
@@ -140,13 +160,47 @@ const fetchAllTestDrives=async()=>{
             
          
             <div className='row stats-row2 mt-5'>
-            <div className='stats-body3 col-md-3'>
-                <h4>Test Drives:</h4>
-                <p className='mt-5'><strong>Total Done Testdrives: (Completed ){totalDoneTestDrives}/(total test drives){totalTestDrives}</strong></p>
+            <div className='stats-body3 col-md-4'>
+                
+                <Bar
+                    data={{
+                        labels:["Done-TestDrives","Requested-TestDrives"],
+                        
+                        datasets:[
+                            {
+                                     
+                                label: "Done Testdrives",
+                                data: [totalDoneTestDrives, totalTestDrives],
+                                backgroundColor: ["green", "purple"],
+                                borderColor: ["darkgreen", "darkpurple"],
+                                borderWidth: 1,
+                                 borderRadius: 5,
+                                barThickness: 40
+                            }
+                        ]
+                    }}
+                />
             </div>
             <div className='stats-body4 col-md-4'>
-                <h3>Lead Conversion:</h3>
-                <p className='mt-5'><strong>Leads Conversion: {totalConversions}/{totalLeads}</strong></p>
+                {/* <h3>Lead Conversion:</h3>
+                <p className='mt-5'><strong>Leads Conversion: {totalConversions}/{totalLeads}</strong></p> */}
+                <Bar
+                    data={{
+                        labels:["total conversions"," total leads"],
+                        datasets:[
+                            {
+                                     
+                                label: "total conversions",
+                                data: [totalConversions, totalLeads],
+                                backgroundColor: ["green", "purple"],
+                                borderColor: ["darkgreen", "darkpurple"],
+                                borderWidth: 1,
+                                borderRadius: 5,
+                                barThickness: 40
+                            }
+                        ]
+                    }}
+                />
             </div>
             </div>
            </div> 
