@@ -67,7 +67,15 @@ const Payment = () => {
       description: `Payment for ${fetchedCar.carBrand}`,
       order_id: order.id, // Razorpay order ID, NOT fetchedLead.id
       handler: async function (paymentResult) {
-        console.log("Payment success:", paymentResult);
+        try
+        {
+        const verifiedResponse=await instance.post('/payments/verifyPayment',{
+            'razorpay_order_id':paymentResult.razorpay_order_id,
+            'razorpay_payment_id':paymentResult.razorpay_payment_id,
+            'razorpay_signature':paymentResult.razorpay_signature
+        });
+       
+            console.log("Payment success:", paymentResult);
         alert("Payment successful");
          await instance.patch(`/leads/updateByStatusOfALead/${fetchedLead.id}`,{
         'buy':true
@@ -77,6 +85,14 @@ const Payment = () => {
             'status':'YES'
         }
     )
+}
+catch(err)
+{
+    console.log(err);
+}
+        
+
+        
         
       },
       prefill: {
