@@ -106,10 +106,11 @@ public class LeadService {
 //        String fileurl=fileService.generateDownloadableLink(docFile);
         String fileurl=null;
         String originalName=docFile.getOriginalFilename();
+        String publicId=originalName.substring(0,originalName.lastIndexOf("."));
         try {
             fileurl =(String) cloudinary.uploader().upload(
                     docFile.getBytes(),
-                    ObjectUtils.asMap("resource_type", "raw","public_id",originalName)
+                    ObjectUtils.asMap("resource_type", "raw","public_id",publicId,"use_filename",true)
             ).get("secure_url");
         }
         catch(IOException ex)
