@@ -1,0 +1,4 @@
+[build]
+  base = "GaadiDealerFrontend/vmsfrontendapp"
+  command = "npm run build"
+  publish = "dist"
