@@ -104,23 +104,23 @@ public class LeadService {
     public String generateFileUri(MultipartFile docFile,Long leadId)
     {
 //        String fileurl=fileService.generateDownloadableLink(docFile);
-        String fileurl;
-        String originalName=docFile.getOriginalFilename();
-        String publicId=originalName.substring(0,originalName.lastIndexOf("."));
-      
-            fileurl =cloudinary.url()
-                    .resourceType("raw")
-                    .type("authenticated")
-                    .signed(true)
-                    .format("pdf")
-                    .generate(publicId);
-            System.out.println("Recieved file from user: "+fileurl);
-            Leads filteredLead= leadsRepository.findById(leadId).orElseThrow(()->new NoSuchElementException("No such lead having this userID and CarID exists!"));
 
-            filteredLead.setUploadedDoc(fileurl);
+
+
+        try {
+            Map fileurl = cloudinary.uploader().
+                    upload("docVerificationUser.pdf", ObjectUtils.emptyMap());
+            System.out.println("Recieved file from user: " + fileurl);
+            Leads filteredLead = leadsRepository.findById(leadId).orElseThrow(() -> new NoSuchElementException("No such lead having this userID and CarID exists!"));
+
+            filteredLead.setUploadedDoc((String)fileurl.get("secure_url"));
             leadsRepository.save(filteredLead);
             return "doc file uploaded successfully!";
-
+        }
+        catch(IOException ex)
+        {
+            throw new RuntimeException("Failed to upload pdf file");
+        }
 
 
     }
