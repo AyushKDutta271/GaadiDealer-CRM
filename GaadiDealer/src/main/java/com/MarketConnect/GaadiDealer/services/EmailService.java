@@ -30,6 +30,7 @@ public class EmailService {
     public void sendSimpleMail(String to, String subject, String body)
     {
         SimpleMailMessage simpleMailMessage=new SimpleMailMessage();
+        simpleMailMessage.setFrom("silentcheeseofficial144@gmail.com");
         simpleMailMessage.setTo(to);
         simpleMailMessage.setSubject(subject);
         simpleMailMessage.setText(body);
