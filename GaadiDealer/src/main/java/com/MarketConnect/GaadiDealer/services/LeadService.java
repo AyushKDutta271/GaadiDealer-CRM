@@ -108,9 +108,10 @@ public class LeadService {
 
 
         try {
-            Map fileurl = cloudinary.uploader().
-                    upload("docVerificationUser.pdf", ObjectUtils.emptyMap());
-            System.out.println("Recieved file from user: " + fileurl);
+            Map fileurl = cloudinary.uploader().upload(
+                    docFile.getBytes(),
+                    ObjectUtils.emptyMap()
+            );
             Leads filteredLead = leadsRepository.findById(leadId).orElseThrow(() -> new NoSuchElementException("No such lead having this userID and CarID exists!"));
 
             filteredLead.setUploadedDoc((String)fileurl.get("secure_url"));
