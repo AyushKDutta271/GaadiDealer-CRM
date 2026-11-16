@@ -110,7 +110,7 @@ const Payment = () => {
 };
   return (
     <>
-        <div className='homeUser-body'>
+        <div className='homeUser-body container'>
              <nav className="navbar navbar-expand-lg  ">
                 <div className="container-fluid">
                     <a className="navbar-brand navLogo" href="#" >GaadiDealer</a>
