@@ -59,7 +59,7 @@ public class SecurityConfig {
                                             .requestMatchers("/testdrives/updateStatus/**")
                                             .hasRole("ADMIN")
                                             .requestMatchers("/leads/customerVerificationDoc/download/**")
-                                            .hasRole("ADMIN")
+                                            .hasAnyRole("ADMIN","USER")
                                             .requestMatchers("/cars/getAllSoldCars")
                                             .hasRole("ADMIN")
                                             .requestMatchers("/cars/getTotalUnSoldCars")
