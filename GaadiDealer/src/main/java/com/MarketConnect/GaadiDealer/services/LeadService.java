@@ -110,7 +110,9 @@ public class LeadService {
         try {
             fileurl =(String) cloudinary.uploader().upload(
                     docFile.getBytes(),
-                    ObjectUtils.asMap("resource_type", "raw","public_id",publicId,"format", "pdf")
+                    ObjectUtils.asMap( "resource_type", "raw",
+                            "type", "authenticated",
+                            "public_id", publicId)
             ).get("secure_url");
             System.out.println("Recieved file from user: "+fileurl);
             Leads filteredLead= leadsRepository.findById(leadId).orElseThrow(()->new NoSuchElementException("No such lead having this userID and CarID exists!"));
