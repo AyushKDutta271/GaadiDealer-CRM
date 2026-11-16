@@ -46,11 +46,11 @@ public class LeadsController {
         return ResponseEntity.status(HttpStatus.CREATED).body(leadService.generateFileUri(docFile,leadId));
     }
 
-        @GetMapping("/adminVerificationDoc/download/{leadId}")
-        public ResponseEntity<?> downloadFileFromAdmin(@PathVariable Long leadId)
-        {
-
-        }
+//        @GetMapping("/adminVerificationDoc/download/{leadId}")
+//        public ResponseEntity<?> downloadFileFromAdmin(@PathVariable Long leadId)
+//        {
+//
+//        }
 
 
         @PostMapping("/save")
