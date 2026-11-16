@@ -21,7 +21,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:5173","http://localhost:4173")
+                        .allowedOrigins("http://localhost:5173","http://localhost:4173","https://gaadidealer-crm-webapp.netlify.app/")
 
                         .allowedMethods("GET", "POST", "PUT","PATCH", "DELETE","OPTIONS")
                         .allowedHeaders("*")
