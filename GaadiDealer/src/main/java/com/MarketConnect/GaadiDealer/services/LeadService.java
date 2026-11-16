@@ -8,6 +8,8 @@ import com.MarketConnect.GaadiDealer.entities.Vehicle;
 import com.MarketConnect.GaadiDealer.repositories.LeadsRepository;
 import com.MarketConnect.GaadiDealer.repositories.UserRepository;
 import com.MarketConnect.GaadiDealer.repositories.VehicleRepository;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.lowagie.text.Document;
 import com.lowagie.text.Image;
 import com.lowagie.text.Paragraph;
@@ -51,6 +53,9 @@ public class LeadService {
     private ContactsService contactsService;
     @Autowired
     private VehicleRepository vehicleRepository;
+
+    @Autowired
+    private Cloudinary cloudinary;
 
     public byte[] generatePdfFile( Long leadId)
     {
@@ -98,7 +103,18 @@ public class LeadService {
 
     public String generateFileUri(MultipartFile docFile,Long leadId)
     {
-        String fileurl=fileService.generateDownloadableLink(docFile);
+//        String fileurl=fileService.generateDownloadableLink(docFile);
+        String fileurl="";
+        try {
+            fileurl =(String) cloudinary.uploader().upload(
+                    docFile.getBytes(),
+                    ObjectUtils.asMap("resource_type", "raw")
+            ).get("secure_url");
+        }
+        catch(IOException ex)
+        {
+            ex.printStackTrace();
+        }
         System.out.println("Recieved file from user: "+fileurl);
         Leads filteredLead= leadsRepository.findById(leadId).orElseThrow(()->new NoSuchElementException("No such lead having this userID and CarID exists!"));
 
