@@ -60,10 +60,10 @@ public class AuthController {
     {
         ResponseCookie cookie=ResponseCookie.from("accesstoken","")
                 .httpOnly(true)
-                .secure(false)
+                .secure(true)
                 .path("/")
                 .maxAge(0)
-                .sameSite("Lax")
+                .sameSite("None")
                 .build();
 
         httpServletResponse.addHeader(HttpHeaders.SET_COOKIE,cookie.toString());
