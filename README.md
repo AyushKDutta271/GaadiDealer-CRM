@@ -270,6 +270,13 @@ The payment workflow includes:
 4. Verifying payment signatures on the backend.
 5. Processing the verification result.
 
+##  Credentials for using it:
+  For user:username=duttaayush732@gmail.com
+           pwd=shamone
+  For admin:Username=silentcheeseofficial144@gmail.com
+            pwd=12345
+
+  
 ## Screenshots
 
 ### User Page
