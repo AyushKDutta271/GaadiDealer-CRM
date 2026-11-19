@@ -21,7 +21,7 @@ const AddVehicle = () => {
     const fetchedUser=await instance.get('/users/getUserByEmailId',{
         params:{
             emailId:fetchedEmailId.data
-        }   //for request params in controller as requestbody not allowed for GET...but why like this? and why not formData?
+        }   
         });
     setLoggedInUser(fetchedUser.data);
     }
@@ -210,7 +210,7 @@ const AddVehicle = () => {
             await instance.post('/cars/addVehicle',fd,
                 {
                     headers:{
-                        "Content-Type":false  //because browser has to set headers automatically
+                        "Content-Type":false 
                     }
                 }
             );

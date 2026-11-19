@@ -9,12 +9,5 @@ const instance=axios.create(
         withCredentials:true,
     }
 );
-//M2:For every request attaching the token as bearer token
-// instance.interceptors.request.use((config)=>{
-//     const savedToken=localStorage.getItem('token')
-//     if(savedToken)
-//         config.headers.Authorization=`Bearer ${savedToken}`
 
-//     return config
-// })
 export default instance;

@@ -104,14 +104,7 @@ const Login = () => {
                             'userType':formInputs.usertype
                 })
                    
-                // const token = response.data;
-
-                //M2:Saving the token in localStorage...until the expire time...but danger for xxs attacks
-                // localStorage.setItem('token',token);
-
-                //M1:saving token in memory---could be lost if page is reloaded
-                // instance.defaults.headers.common["Authorization"] =
-                //     `Bearer ${token}`;
+                
                 setFinalError(null);
                 setSuccessMessage("Login Successfully!");
             }

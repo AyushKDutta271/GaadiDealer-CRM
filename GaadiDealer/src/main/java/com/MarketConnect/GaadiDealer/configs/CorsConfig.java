@@ -15,7 +15,7 @@ public class CorsConfig {
             @Override
             public void addResourceHandlers(ResourceHandlerRegistry registry) {
                 registry.addResourceHandler("/*.jpg", "/*.jpeg", "/*.png", "/*.gif", "/*.webp","/*.pdf")
-                        .addResourceLocations("file:src/main/resources/uploads/");  //why needed
+                        .addResourceLocations("file:src/main/resources/uploads/");
             }
 
             @Override

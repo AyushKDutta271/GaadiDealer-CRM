@@ -73,7 +73,7 @@ const fetchLoggedInUser=async ()=>{
         );
 
          const blob = new Blob([response.data], {
-        type: response.headers["content-type"] || "application/octet-stream",  //why?
+        type: response.headers["content-type"] || "application/octet-stream",
       });
 
       const url = window.URL.createObjectURL(blob);
@@ -110,7 +110,7 @@ const fetchLoggedInUser=async ()=>{
             console.log(formData)
              await instance.put(`/leads/customerVerificationDoc/upload/${fetchedLead[0].id}`,formData,{
                 headers: {
-    "Content-Type": "multipart/form-data"  //why this was not done during carimages upload...it simply worked with formdata
+    "Content-Type": "multipart/form-data"  
   }
              }
              );

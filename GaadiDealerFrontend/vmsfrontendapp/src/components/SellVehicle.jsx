@@ -22,7 +22,7 @@ const SellVehicle = () => {
     const fetchedUser=await instance.get('/users/getUserByEmailId',{
         params:{
             emailId:fetchedEmailId.data
-        }   //for request params in controller as requestbody not allowed for GET...but why like this? and why not formData?
+        }   
         });
     setLoggedInUser(fetchedUser.data);
     }
